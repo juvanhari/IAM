@@ -1,0 +1,9 @@
+services:
+  idmdb:
+    image: mcr.microsoft.com/mssql/server
+
+  idm.api:
+    image: ${DOCKER_REGISTRY-}idmapi
+    build:
+      context: .
+      dockerfile: Services/IDM/Idm.Api/Dockerfile

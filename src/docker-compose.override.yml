@@ -1,0 +1,25 @@
+services:
+  idmdb:
+     container_name: idmdb
+     environment:
+       - ACCEPT_EULA=Y
+       - SA_PASSWORD=78fghAsd!
+     restart: always
+     ports:
+       - "1434:1433"
+
+  idm.api:
+    container_name: idmapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Database=Server=idmdb;Database=IAM;User Id=sa;Password=78fghAsd!;Encrypt=False;TrustServerCertificate=True
+    depends_on:
+      - idmdb
+    ports:
+      - "6003:8080"
+      - "6063:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
